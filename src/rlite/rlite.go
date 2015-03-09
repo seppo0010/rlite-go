@@ -22,9 +22,9 @@ import (
 )
 
 func StringToBytes(s string) []byte {
-       sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
-       bh := reflect.SliceHeader{sh.Data, sh.Len, 0}
-       return *(*[]byte)(unsafe.Pointer(&bh))
+	sh := (*reflect.StringHeader)(unsafe.Pointer(&s))
+	bh := reflect.SliceHeader{sh.Data, sh.Len, 0}
+	return *(*[]byte)(unsafe.Pointer(&bh))
 }
 
 type Conn struct {
@@ -51,27 +51,27 @@ func Close(c *Conn) {
 }
 
 func GetReply(reply *C.rliteReply) (interface{}, error) {
-    if reply._type == C.RLITE_REPLY_ERROR {
-        return nil, errors.New(C.GoStringN(reply.str, reply.len))
-    }
-    if reply._type == C.RLITE_REPLY_STRING || reply._type == C.RLITE_REPLY_STATUS {
-        return C.GoStringN(reply.str, reply.len), nil
-    }
-    if reply._type == C.RLITE_REPLY_INTEGER {
-        return int(reply.integer), nil
-    }
-    if reply._type == C.RLITE_REPLY_NIL {
-        return nil, nil
-    }
-    if reply._type == C.RLITE_REPLY_ARRAY {
-        arr := make([]interface{}, reply.elements)
-        for i := C.size_t(0); i < reply.elements; i++ {
-            // TODO: what if the array has an error?
-            arr[i], _ = GetReply(C.ptor_pos(reply.element, i))
-        }
-        return arr, nil
-    }
-    return nil, errors.New(fmt.Sprintf("Unknown type %d", reply._type))
+	if reply._type == C.RLITE_REPLY_ERROR {
+		return nil, errors.New(C.GoStringN(reply.str, reply.len))
+	}
+	if reply._type == C.RLITE_REPLY_STRING || reply._type == C.RLITE_REPLY_STATUS {
+		return C.GoStringN(reply.str, reply.len), nil
+	}
+	if reply._type == C.RLITE_REPLY_INTEGER {
+		return int(reply.integer), nil
+	}
+	if reply._type == C.RLITE_REPLY_NIL {
+		return nil, nil
+	}
+	if reply._type == C.RLITE_REPLY_ARRAY {
+		arr := make([]interface{}, reply.elements)
+		for i := C.size_t(0); i < reply.elements; i++ {
+			// TODO: what if the array has an error?
+			arr[i], _ = GetReply(C.ptor_pos(reply.element, i))
+		}
+		return arr, nil
+	}
+	return nil, errors.New(fmt.Sprintf("Unknown type %d", reply._type))
 }
 
 func Command(c *Conn, list []string) (interface{}, error) {
@@ -85,14 +85,14 @@ func Command(c *Conn, list []string) (interface{}, error) {
 	argvlen := C.malloc(C.size_t(len(list)) * C.size_t(argvlenSize))
 
 	for i := 0; i < len(list); i++ {
-        b := StringToBytes(list[i])
+		b := StringToBytes(list[i])
 		element := (**C.char)(unsafe.Pointer(uintptr(argv) + uintptr(i)*argvSize))
 		*element = (*C.char)(unsafe.Pointer(&b[0]))
 		elementlen := (*C.size_t)(unsafe.Pointer(uintptr(argvlen) + uintptr(i)*argvSize))
 		*elementlen = C.size_t(len(b))
 	}
-    p := C.rliteCommandArgv(c.db, C.int(len(list)), (**C.char)(argv), (*C.size_t)(argvlen))
-    r := C.ptor(p)
-    defer C.rliteFreeReplyObject(p)
+	p := C.rliteCommandArgv(c.db, C.int(len(list)), (**C.char)(argv), (*C.size_t)(argvlen))
+	r := C.ptor(p)
+	defer C.rliteFreeReplyObject(p)
 	return GetReply(r)
 }

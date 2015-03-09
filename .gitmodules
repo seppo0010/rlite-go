@@ -1,3 +1,0 @@
-[submodule "deps/rlite"]
-	path = deps/rlite
-	url = git://github.com/seppo0010/rlite.git

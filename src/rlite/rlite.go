@@ -3,7 +3,7 @@ package rlite
 /*
 #cgo CFLAGS: -std=gnu99
 #cgo LDFLAGS: -lhirlite
-#include "../../deps/rlite/src/hirlite.h"
+#include <hirlite/hirlite.h>
 // I don't know how to cast in go
 static inline rliteReply* ptor_pos(rliteReply **p, size_t pos) {
     rliteReply **element = p;

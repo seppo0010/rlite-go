@@ -119,3 +119,23 @@ func TestArray(t *testing.T) {
         t.Error("Unexpected value on position 2")
     }
 }
+
+func TestPersistence(t *testing.T) {
+	db, err := Open("mydb.rld")
+	if err != nil {
+		t.Error("Unable to open database")
+	}
+	Command(db, []string{"SET", "key", "value"})
+
+	db, err = Open("mydb.rld")
+	if err != nil {
+		t.Error("Unable to open database")
+	}
+	reply, err := Command(db, []string{"GET", "key"})
+    if err != nil {
+        t.Error("Got error")
+    }
+    if reply != "value" {
+        t.Error("Got invalid reply")
+    }
+}

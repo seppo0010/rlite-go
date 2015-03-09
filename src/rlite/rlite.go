@@ -2,10 +2,10 @@ package rlite
 
 /*
 #cgo CFLAGS: -std=gnu99
-#cgo LDFLAGS: -lhirlite
+#cgo LDFLAGS: -lhirlite -lm
 #include <hirlite/hirlite.h>
 // I don't know how to cast in go
-static inline rliteReply* ptor_pos(rliteReply **p, size_t pos) {
+static inline rliteReply* ptor_pos(struct rliteReply **p, size_t pos) {
     rliteReply **element = p;
     return element[pos];
 }

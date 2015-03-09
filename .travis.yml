@@ -1,11 +1,11 @@
 language: go
 
-install:
+before_install:
     - |
         git clone https://github.com/seppo0010/rlite.git \
         && pushd rlite \
         && make \
-        && sudo make install\
+        && sudo make install \
         && popd
 
 notifications:

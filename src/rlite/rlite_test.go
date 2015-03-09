@@ -121,21 +121,25 @@ func TestArray(t *testing.T) {
 }
 
 func TestPersistence(t *testing.T) {
-	db, err := Open("mydb.rld")
-	if err != nil {
-		t.Error("Unable to open database")
-	}
-	Command(db, []string{"SET", "key", "value"})
+	for i := 0; i < 4; i++ {
+		db, err := Open("mydb.rld")
+		if err != nil {
+			t.Error("Unable to open database")
+		}
+		Command(db, []string{"SET", "key", "value"})
+		Close(db);
 
-	db, err = Open("mydb.rld")
-	if err != nil {
-		t.Error("Unable to open database")
-	}
-	reply, err := Command(db, []string{"GET", "key"})
-	if err != nil {
-		t.Error("Got error")
-	}
-	if reply != "value" {
-		t.Error("Got invalid reply")
+		db, err = Open("mydb.rld")
+		if err != nil {
+			t.Error("Unable to open database")
+		}
+		reply, err := Command(db, []string{"GET", "key"})
+		if err != nil {
+			t.Error("Got error")
+		}
+		if reply != "value" {
+			t.Error("Got invalid reply")
+		}
+		Close(db);
 	}
 }

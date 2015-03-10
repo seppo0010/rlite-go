@@ -18,15 +18,20 @@ $ go get github.com/seppo0010/rlite-go
 ```go
 import "rlite"
 
-// ...
-db, _ := Open(":memory:")
-Command(db, []string{"SET", "key", "value"})
+import "github.com/seppo0010/rlite-go/rlite"
+import "fmt"
 
-reply, err := Command(db, []string{"GET", "key"})
-if err != nil {
-    t.Error("Got error")
-}
-if reply != "value" {
-    t.Error("Got invalid reply")
+func main () {
+    db, _ := rlite.Open(":memory:")
+    rlite.Command(db, []string{"SET", "key", "value"})
+
+    reply, err := rlite.Command(db, []string{"GET", "key"})
+    if err != nil {
+        // ...
+    }
+    if reply != "value" {
+        // ...
+    }
+    fmt.Println(reply)
 }
 ```

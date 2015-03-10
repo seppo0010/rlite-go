@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/seppo0010/rlite-go.svg?branch=master)](https://travis-ci.org/seppo0010/rlite-go)
 
-Java bindings for rlite. For more information about rlite, go to
+golang bindings for rlite. For more information about rlite, go to
 [rlite repository](https://github.com/seppo0010/rlite)
 
 ## Installation

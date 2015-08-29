@@ -16,9 +16,9 @@ $ go get github.com/seppo0010/rlite-go
 ### Using rlite-go
 
 ```go
-import "rlite"
+package main
 
-import "github.com/seppo0010/rlite-go/rlite"
+import "github.com/seppo0010/rlite-go"
 import "fmt"
 
 func main () {
